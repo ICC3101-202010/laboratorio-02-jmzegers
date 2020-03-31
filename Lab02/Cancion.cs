@@ -27,13 +27,13 @@ namespace Lab02
             return "Genero: " + genero + ", Artista: " + artista + ", Album: " + album + ", Nombre: " + nombre;
         }
 
-        public string[] Transformador(string genero, string artista, string album, string nombre)
+        public string[] Transformador(Cancion cancion)
         {
             string[] a2 = { genero, artista, album, nombre };
             return a2;
         }
 
-        protected ArrayList listaCanciones = new ArrayList();
+        protected List<string[]> listaCanciones = new List<string[]>();
         public string[] t1;
         public string[] t2;
         public string[] t3;
@@ -53,13 +53,13 @@ namespace Lab02
         {
             Console.WriteLine("Bienvenido a Espotifai!");
             Console.WriteLine("Para ingresar una cancion, aprete A");
-            t1 = Transformador(C1.genero, C1.artista, C1.album, C1.nombre);
-            t2 = Transformador(C2.genero, C2.artista, C2.album, C2.nombre);
-            t3 = Transformador(C3.genero, C3.artista, C3.album, C3.nombre);
-            t4 = Transformador(C4.genero, C4.artista, C4.album, C4.nombre);
-            t5 = Transformador(C5.genero, C5.artista, C5.album, C5.nombre);
-            t6 = Transformador(C6.genero, C6.artista, C6.album, C6.nombre);
-            t7 = Transformador(C7.genero, C7.artista, C7.album, C7.nombre);
+            t1 = Transformador(C1);
+            t2 = Transformador(C2);
+            t3 = Transformador(C3);
+            t4 = Transformador(C4);
+            t5 = Transformador(C5);
+            t6 = Transformador(C6);
+            t7 = Transformador(C7);
             listaCanciones.Add(t1);
             listaCanciones.Add(t2);
             listaCanciones.Add(t3);
@@ -75,20 +75,31 @@ namespace Lab02
 
     public class Espotifai : Cancion
     {
-
+        public string[] s1;
+        public int a;
+        public int b;
         public bool AgregarCancion(Cancion cancion)
         {
+            s1 = Transformador(cancion);
             foreach (string[] t in listaCanciones)
             {
-                if (t[1] == t1[1] & t[2] == t1[2] & t[3] == t1[3])
+                if (t[1] == s1[1] & t[2] == s1[2] & t[3] == s1[3])
                 {
-                    return false;
+                    a = 1;
                 }
                 else
                 {
-                    listaCanciones.Add(t);
-                    return true;
+                    b = 1;
                 }
+            }
+            if (a == 1)
+            {
+                return false;
+            }
+            else
+            {
+                listaCanciones.Add(s1);
+                return true;
             }
         }
 
@@ -97,15 +108,14 @@ namespace Lab02
             Console.WriteLine(listaCanciones);
         }
 
-        public Cancion[] CancionesPorCriterio(String criterio, String valor)
+        public List<string[]> CancionesPorCriterio(string criterio, string valor)
         {
-            ArrayList listaResultados = new ArrayList();
-            criterio = Console.ReadLine();
+            List<string[]> listaResultados = new List<string[]>();
             if (criterio == "Genero" || criterio == "genero")
             {
                 Console.WriteLine("Ingrese el genero deseado");
                 valor = Console.ReadLine();
-                foreach (String[] s in listaCanciones)
+                foreach (string[] s in listaCanciones)
                 {
                     if (valor == s[0])
                     {
@@ -174,16 +184,36 @@ namespace Lab02
                 Console.WriteLine("Error");
                 Console.WriteLine("Criterio invalido");
             }
-            return listaResultados();
+            return listaResultados;
         }
 
-        ArrayList playlist = new ArrayList();
-        ArrayList opciones = new ArrayList();
+        List<List<string[]>> listaPlaylists = new List<List<string[]>>();
         private string respuesta;
         private string resp;
         private int r;
+        private int u;
+        private int v;
         public bool GenerarPlaylist(string criterio, string valorCriterio, string nombrePlaylist)
         {
+            List<string[]> playlist = new List<string[]>();
+            string[] NombrePlaylist = { nombrePlaylist };
+            playlist.Add(NombrePlaylist);
+            foreach(List<string[]> l in listaPlaylists)
+            {
+                if (l[0][0] == "nombrePlaylist")
+                {
+                    u = 1;
+                }
+                else
+                {
+                    v = 1;
+                }
+            }
+            if (u == 1)
+            {
+                Console.WriteLine("Ya existe un playlist con ese nombre");
+                return false;
+            }
             Console.WriteLine("Desea agregar canciones a su playlist? si/no");
             respuesta = Console.ReadLine();
             if (respuesta == "si")
@@ -196,15 +226,36 @@ namespace Lab02
                     Console.WriteLine("Album");
                     Console.WriteLine("Nombre");
                     resp = Console.ReadLine();
-                    opciones = CancionesPorCriterio(respuesta, criterio);
+                    List<string[]> opciones = CancionesPorCriterio(resp, criterio);
+                    if (opciones == null)
+                    {
+                        Console.WriteLine("No se han encontrado canciones con ese criterio");
+                        break;
+                    }
                     Console.WriteLine("Escriba el numero de la cancion que desea agregar");
                     int r = Convert.ToInt32(Console.ReadLine());
-                    playlist.Add(opciones(r + 1));
+                    string[] d = opciones[r + 1];
+                    playlist.Add(d);
                     Console.WriteLine("Desea agregar otra cancion a su playlist? si/no");
                     respuesta = Console.ReadLine();
                 }
             }
+            if (playlist == null)
+            {
+                return false;
+            }
+            return true;
         }
+
+        public string VerMisPlaylists()
+        {
+            foreach (List<string[]> l in listaPlaylists)
+            {
+                Console.WriteLine(l);
+            }
+            return ("Listo!");
+        }
+
         public void Main(string[] args)
         {
 
