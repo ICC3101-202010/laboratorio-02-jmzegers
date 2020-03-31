@@ -13,6 +13,7 @@ namespace Lab02
         protected string artista;
         protected string album;
         protected string nombre;
+        protected List<List<string[]>> listaPlaylists = new List<List<string[]>>();
 
         public Cancion(string genero, string artista, string album, string nombre)
         {
@@ -80,6 +81,7 @@ namespace Lab02
         public int b;
         public bool AgregarCancion(Cancion cancion)
         {
+            a = 0;
             s1 = Transformador(cancion);
             foreach (string[] t in listaCanciones)
             {
@@ -187,17 +189,16 @@ namespace Lab02
             return listaResultados;
         }
 
-        List<List<string[]>> listaPlaylists = new List<List<string[]>>();
         private string respuesta;
         private string resp;
-        private int r;
-        private int u;
-        private int v;
+        int v;
         public bool GenerarPlaylist(string criterio, string valorCriterio, string nombrePlaylist)
         {
             List<string[]> playlist = new List<string[]>();
             string[] NombrePlaylist = { nombrePlaylist };
             playlist.Add(NombrePlaylist);
+            int u;
+            u = 1;
             foreach(List<string[]> l in listaPlaylists)
             {
                 if (l[0][0] == "nombrePlaylist")
@@ -256,17 +257,128 @@ namespace Lab02
             return ("Listo!");
         }
 
+        public static void Exit(int exitCode)
+        {
+            exitCode = 1;
+        }
+
         public void Main(string[] args)
         {
+            int ph;
+            ph = 0;
+            while (ph == 0)
+            {
+                Console.WriteLine("Desea ver todas las canciones de Espotifai? si/no");
+                respuesta = Console.ReadLine();
+                if (respuesta == "si")
+                {
+                    foreach (string[] s in listaCanciones)
+                    {
+                        Console.WriteLine(s);
+                    }
+                    ph = 1;
+                }
+                else if (respuesta == "no")
+                {
+                    ph = 1;
+                }
+                else
+                {
+                    Console.WriteLine("Respuesta Invalida");
+                }
+            }
+            ph = 0;
+            while (ph == 0)
+            {
+                Console.WriteLine("Desea agregar canciones a Espotifai? si/no");
+                respuesta = Console.ReadLine();
+                if (respuesta == "si")
+                {
+                    string g;
+                    string a1;
+                    string a2;
+                    string n;
+                    Console.WriteLine("Ingrese el genero");
+                    g = Console.ReadLine();
+                    Console.WriteLine("Ingrese el artista");
+                    a1 = Console.ReadLine();
+                    Console.WriteLine("Ingrese el album");
+                    a2 = Console.ReadLine();
+                    Console.WriteLine("Ingrese el nombre");
+                    n = Console.ReadLine();
+                    Cancion c = new Cancion(g, a1, a2, n);
+                    AgregarCancion(c);
+                    ph = 1;
+                }
+                else if (respuesta == "no")
+                {
+                    ph = 1;
+                }
+                else
+                {
+                    Console.WriteLine("Respuesta Invalida");
+                }
+            }
+            ph = 0;
+            int a;
+            a = 0;
+            while (ph == 0)
+            {
+                Console.WriteLine("Desea salir del programa? si/no");
+                respuesta = Console.ReadLine();
+                if (respuesta == "si")
+                {
+                    ph = 1;
+                    a = 1;
+                }
+                else if (respuesta == "no")
+                {
 
+                }
+                else
+                {
+                    Console.WriteLine("Respuesta invalida");
+                }
+            }
+            if (a == 1)
+            {
+                Environment.Exit(1);
+            }
         }
     }
 
     public class Playlist : Cancion
     {
-        public Playlist(Cancion cancion)
+        public Playlist(): Cancion()
         {
-
+            
+        }
+        public void Main(string[] args)
+        {
+            int ph;
+            ph = 0;
+            while (ph == 0)
+            {
+                Console.WriteLine("Desea ver todas las playlists de Espotifai? si/no");
+                string respuesta;
+                respuesta = Console.ReadLine();
+                if (respuesta == "si")
+                {
+                    foreach (List<string[]> s in listaPlaylists)
+                    {
+                        Console.WriteLine(s);
+                    }
+                    ph = 1;
+                }
+                else if (respuesta == "no")
+                {
+                    ph = 1;
+                }
+                else
+                {
+                    Console.WriteLine("Respuesta Invalida");
+                }
+            }
         }
     }
 }
